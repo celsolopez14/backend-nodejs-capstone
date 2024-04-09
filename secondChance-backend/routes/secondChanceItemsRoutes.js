@@ -5,9 +5,13 @@ const fs = require('fs');
 const router = express.Router();
 const connectToDatabase = require('../models/db');
 const logger = require('../logger');
+const dotenv = require('dotenv');
 
+dotenv.config();
 // Define the upload directory path
 const directoryPath = 'public/images';
+
+const dbCollection = `${process.env.MONGO_COLLECTION}`;
 
 // Set up storage for uploaded files
 const storage = multer.diskStorage({
@@ -27,7 +31,7 @@ router.get('/', async (req, res, next) => {
     logger.info('/ called');
     try {
         const db = await connectToDatabase();
-        const collection = db.collection("secondChanceItems");
+        const collection = db.collection(dbCollection);
         const secondChanceItems = await collection.find({}).toArray();
         res.json(secondChanceItems);
     } catch (e) {
@@ -41,7 +45,7 @@ router.post('/', upload.single('file'), async (req, res, next) => {
     try {
 
         const db = await connectToDatabase();
-        const collection = db.collection("secondChanceItems");
+        const collection = db.collection(dbCollection);
         let secondChanceItem = req.body;
         const lastItemQuery = await collection.find().sort({ 'id': -1 }).limit(1);
 
@@ -61,7 +65,7 @@ router.post('/', upload.single('file'), async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
     try {
         const db = await connectToDatabase();
-        const collection = db.collection("secondChanceItems");
+        const collection = db.collection(dbCollection);
         const secondChanceItem = await collection.findOne({ id: req.params.id });
 
         if (!secondChanceItem) return res.status(404).send("secondChanceItem not found");
@@ -76,7 +80,7 @@ router.get('/:id', async (req, res, next) => {
 router.put('/:id', async (req, res, next) => {
     try {
         const db = await connectToDatabase();
-        const collection = db.collection("secondChanceItems");
+        const collection = db.collection(dbCollection);
         const secondChanceItem = await collection.findOne({ id: req.params.id });
 
         if (!secondChanceItem) return res.status(404).send("secondChanceItem not found");
@@ -108,7 +112,7 @@ router.put('/:id', async (req, res, next) => {
 router.delete('/:id', async (req, res, next) => {
     try {
         const db = await connectToDatabase();
-        const collection = db.collection("secondChanceItems");
+        const collection = db.collection(dbCollection);
         const secondChanceItem = await collection.findOne({ id: req.params.id });
 
         if (!secondChanceItem) return res.status(404).send("secondChanceItem not found");

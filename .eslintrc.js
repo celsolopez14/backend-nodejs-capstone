@@ -23,6 +23,7 @@ module.exports = {
   },
   rules: {
     'quotes': ['error', 'double'],
-    'semi': ['error', 'always']
+    'semi': ['error', 'always'],
+    "space-before-function-paren": ["off"]
   }
 }

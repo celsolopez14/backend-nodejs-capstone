@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname); // Use the original file name
-  },
+  }
 });
 
 const upload = multer({ storage: storage });
@@ -66,7 +66,7 @@ router.get("/:id", async (req, res, next) => {
     const collection = db.collection(dbCollection);
     const secondChanceItem = await collection.findOne({ id: req.params.id });
 
-    if (!secondChanceItem){
+    if (!secondChanceItem) {
       return res.status(404).send("secondChanceItem not found");
     }
 
@@ -83,7 +83,7 @@ router.put("/:id", async (req, res, next) => {
     const collection = db.collection(dbCollection);
     const secondChanceItem = await collection.findOne({ id: req.params.id });
 
-    if (!secondChanceItem){
+    if (!secondChanceItem) {
       return res.status(404).send("secondChanceItem not found");
     }
 
@@ -119,7 +119,7 @@ router.delete("/:id", async (req, res, next) => {
     const collection = db.collection(dbCollection);
     const secondChanceItem = await collection.findOne({ id: req.params.id });
 
-    if (!secondChanceItem){
+    if (!secondChanceItem) {
       return res.status(404).send("secondChanceItem not found");
     }
 

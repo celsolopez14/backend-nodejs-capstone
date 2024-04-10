@@ -1,7 +1,7 @@
 const express = require("express");
 const multer = require("multer");
-const path = require("path");
-const fs = require("fs");
+// const path = require("path");
+// const fs = require("fs");
 const router = express.Router();
 const connectToDatabase = require("../models/db");
 const logger = require("../logger");
@@ -66,8 +66,9 @@ router.get("/:id", async (req, res, next) => {
     const collection = db.collection(dbCollection);
     const secondChanceItem = await collection.findOne({ id: req.params.id });
 
-    if (!secondChanceItem)
+    if (!secondChanceItem){
       return res.status(404).send("secondChanceItem not found");
+    }
 
     res.json(secondChanceItem);
   } catch (e) {
@@ -82,8 +83,9 @@ router.put("/:id", async (req, res, next) => {
     const collection = db.collection(dbCollection);
     const secondChanceItem = await collection.findOne({ id: req.params.id });
 
-    if (!secondChanceItem)
+    if (!secondChanceItem){
       return res.status(404).send("secondChanceItem not found");
+    }
 
     secondChanceItem.category = req.body.category;
     secondChanceItem.condition = req.body.condition;
@@ -117,8 +119,9 @@ router.delete("/:id", async (req, res, next) => {
     const collection = db.collection(dbCollection);
     const secondChanceItem = await collection.findOne({ id: req.params.id });
 
-    if (!secondChanceItem)
+    if (!secondChanceItem){
       return res.status(404).send("secondChanceItem not found");
+    }
 
     await collection.deleteOne({ id: req.params.id });
     res.json({ deleted: "success" });
